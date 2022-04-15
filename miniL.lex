@@ -68,11 +68,11 @@ UNDERSCORE [_]
 
 (\.{DIGIT}+)|({DIGIT}+(\.{DIGIT}*)?([eE][+-]?{DIGIT}+)?) {printf("NUMBER %s\n", yytext); currPos += yyleng;}
 
-({ALPHA}|{DIGIT}|{UNDERSCORE})*({UNDERSCORE}) {printf("Error at line %d, column 0: identifier %s cannot end with an underscore\n", currLine + 1, currPos - 1, yytext); exit(0); }
+({DIGIT}|{UNDERSCORE})({ALPHA}|{DIGIT}|{UNDERSCORE})*({ALPHA}|{DIGIT})   {printf("Error at line %d, column 0: identifier %s must begin with a letter\n", currLine + 1, currPos - 1, yytext); exit(0);}
 
-({DIGIT}|{UNDERSCORE})({ALPHA}|{DIGIT}|{UNDERSCORE})*{ALPHA}    {printf("Error at line %d, column 0: identifier %s must begin with a letter\n", currLine + 1, currPos - 1, yytext); exit(0);}
+({ALPHA}|{DIGIT}|{UNDERSCORE})*({ALPHA}|{DIGIT})   {printf("IDENT %s\n", yytext); currPos += yyleng;}
 
-({ALPHA}|{DIGIT}|{UNDERSCORE})*{ALPHA}   {printf("IDENT %s\n", yytext); currPos += yyleng;}
+({ALPHA}|{DIGIT}|{UNDERSCORE})*{UNDERSCORE} {printf("Error at line %d, column 0: identifier %s cannot end with an underscore\n", currLine + 1, currPos - 1, yytext); exit(0); }
 
 . {printf("Error at line %d, column %d: unrecognized symbol %s\n", currLine + 1, currPos - 1, yytext); exit(0);}
 
